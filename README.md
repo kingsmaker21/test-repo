@@ -1,28 +1,32 @@
-# Live-Streaming-using-OpenCV-Flask
-A Flask Web-App to stream live from local webcam or CCTV (rtsp link)
+# Remote streaming live video with Flask
 
-## Use Built-in Webcam of Laptop
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rena2damas/remote-opencv-streaming-live-video/blob/master/LICENSE)
 
-### Put Zero (O) in cv2.VideoCapture(0)
+## Description
 
-``` cv2.VideoCapture(0) ```
+This an implementation on how to get a remote streaming live video connection between 2 different processes using websockets. The video image is captured through [OpenCV](https://opencv.org/) on one machine and video is served in another machine. This approach serves best the scenario where the Webserver is located in a different network than the machine that is producing the video streaming.
 
-### Use Ip Camera/CCTV/RTSP Link
-``` cv2.VideoCapture('rtsp://username:password@camera_ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp')  ```
+The streaming process can be summed into the following steps:
+1. Capturing video image
+2. For each frame, serialize the image
+3. Flush the data to the Webserver listening socket
+4. Deserialize the data into a jpeg image
+5. Serve the result in the web page
 
-### Example RTSP Link
-``` cv2.VideoCapture('rtsp://mamun:123456@101.134.16.117:554/user=mamun_password=123456_channel=0_stream=0.sdp') ```
+The web framework used for the webserver is [Flask](http://flask.pocoo.org/). For example purposes, we will be using laptop's webcam image straight away.
 
-### Change Channel Number to Change the Camera
-``` cv2.VideoCapture('rtsp://mamun:123456@101.134.16.117:554/user=mamun_password=123456_channel=1_stream=0.sdp') ```
+## Install
+This project runs with Python. Also install the following Python dependencies (pip makes it dead simple):
+* opencv-python
+* flask
 
-### Display the resulting frame in browser
-``` cv2.imencode('.jpg', frame)[1].tobytes() ```
+## Usage
+1. Start the server.py and go to "http://&lt;address&gt;:&lt;port&gt;/video_feed"
+2. Start the client.py
+3. See the result in the browser
+  
+## Credits
+The approach on how to serve the video on a webpage is taken from [this blog](http://blog.miguelgrinberg.com/post/video-streaming-with-flask).
 
-### Or this one
-```
-net , buffer = cv2.imencode('.jpg', frame)
-buffer.tobytes()              
-```
-
-### [Reference](https://blog.miguelgrinberg.com/post/video-streaming-with-flask)
+## License
+Code and documentation released under the [MIT License](https://github.com/rena2damas/remote-opencv-streaming-live-video/blob/master/LICENSE)
